@@ -15,13 +15,22 @@ from typing import Any
 
 from ytmusicapi import YTMusic
 
-from webapp.backend.services.curl_parser import (
-    DEFAULT_USER_AGENT,
-    YTM_ORIGIN,
-    _ensure_ytmusicapi_cookie_compatibility,
-    compute_sapisidhash,
-    extract_sapisid_from_cookie_str,
-)
+try:
+    from webapp.backend.services.curl_parser import (
+        DEFAULT_USER_AGENT,
+        YTM_ORIGIN,
+        _ensure_ytmusicapi_cookie_compatibility,
+        compute_sapisidhash,
+        extract_sapisid_from_cookie_str,
+    )
+except ImportError:
+    from services.curl_parser import (  # type: ignore[no-redef]
+        DEFAULT_USER_AGENT,
+        YTM_ORIGIN,
+        _ensure_ytmusicapi_cookie_compatibility,
+        compute_sapisidhash,
+        extract_sapisid_from_cookie_str,
+    )
 
 SENSITIVE_PATTERNS = re.compile(
     r"("

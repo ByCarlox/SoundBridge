@@ -5,9 +5,17 @@ from __future__ import annotations
 from collections import defaultdict, deque
 import os
 from pathlib import Path
+import sys
 import threading
 import time
 from typing import Any
+
+# Support running both from repo root (`.`) and from service root (`webapp/backend`) on Vercel Services
+_BACKEND_DIR = Path(__file__).resolve().parent
+_REPO_ROOT = _BACKEND_DIR.parent.parent
+for _p in (str(_BACKEND_DIR), str(_REPO_ROOT)):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 from fastapi import FastAPI, Request
 from fastapi.concurrency import run_in_threadpool
@@ -17,28 +25,52 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.base import BaseHTTPMiddleware
 
-from webapp.backend.models import (
-    HealthResponse,
-    SpotifyPublicPlaylistRequest,
-    SpotifyPublicPlaylistResponse,
-    YTMPlaylistsRequest,
-    YTMPlaylistsResponse,
-    YTMPreparePlaylistRequest,
-    YTMPreparePlaylistResponse,
-    YTMTransferBatchRequest,
-    YTMTransferBatchResponse,
-    YTMValidateRequest,
-)
-from webapp.backend.services.curl_parser import parse_curl_or_headers
-from webapp.backend.services.spotify_service import fetch_public_spotify_playlist
-from webapp.backend.services.ytm_service import (
-    create_or_get_ytm_playlist,
-    is_auth_expired_error,
-    list_user_playlists,
-    sanitize_error_message,
-    transfer_batch,
-    validate_ytm_session,
-)
+try:
+    from webapp.backend.models import (
+        HealthResponse,
+        SpotifyPublicPlaylistRequest,
+        SpotifyPublicPlaylistResponse,
+        YTMPlaylistsRequest,
+        YTMPlaylistsResponse,
+        YTMPreparePlaylistRequest,
+        YTMPreparePlaylistResponse,
+        YTMTransferBatchRequest,
+        YTMTransferBatchResponse,
+        YTMValidateRequest,
+    )
+    from webapp.backend.services.curl_parser import parse_curl_or_headers
+    from webapp.backend.services.spotify_service import fetch_public_spotify_playlist
+    from webapp.backend.services.ytm_service import (
+        create_or_get_ytm_playlist,
+        is_auth_expired_error,
+        list_user_playlists,
+        sanitize_error_message,
+        transfer_batch,
+        validate_ytm_session,
+    )
+except ImportError:
+    from models import (  # type: ignore[no-redef]
+        HealthResponse,
+        SpotifyPublicPlaylistRequest,
+        SpotifyPublicPlaylistResponse,
+        YTMPlaylistsRequest,
+        YTMPlaylistsResponse,
+        YTMPreparePlaylistRequest,
+        YTMPreparePlaylistResponse,
+        YTMTransferBatchRequest,
+        YTMTransferBatchResponse,
+        YTMValidateRequest,
+    )
+    from services.curl_parser import parse_curl_or_headers  # type: ignore[no-redef]
+    from services.spotify_service import fetch_public_spotify_playlist  # type: ignore[no-redef]
+    from services.ytm_service import (  # type: ignore[no-redef]
+        create_or_get_ytm_playlist,
+        is_auth_expired_error,
+        list_user_playlists,
+        sanitize_error_message,
+        transfer_batch,
+        validate_ytm_session,
+    )
 
 APP_VERSION = "2.0.0"
 FRONTEND_DIST_DIR = Path(__file__).resolve().parent.parent / "frontend" / "dist"
