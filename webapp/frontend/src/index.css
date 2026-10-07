@@ -1,0 +1,203 @@
+@import "tailwindcss";
+@import "@fontsource/geist-sans/400.css";
+@import "@fontsource/geist-sans/500.css";
+@import "@fontsource/geist-sans/600.css";
+@import "@fontsource/geist-sans/700.css";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
+@import "@fontsource/geist-mono/600.css";
+
+:root {
+  --font-sans: "Geist Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* SoundBridge Sonic Dual-Glow Palette */
+  --bg-canvas: #060609;
+  --bg-surface: #0D0E14;
+  --bg-elevated: #151722;
+  --border-hairline: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+
+  /* Brand Colors */
+  --spotify-green: #1ED760;
+  --sonic-cyan: #00E5FF;
+  --ytm-crimson: #FF0033;
+
+  /* Text Hierarchy */
+  --text-primary: #F8FAFC;
+  --text-muted: #94A3B8;
+  --text-dim: #64748B;
+
+  /* Emil Kowalski & Apple Design Custom Easing Curves */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  overflow-x: hidden;
+}
+
+code,
+pre,
+kbd,
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Double-Bezel (Doppelrand) Nested Architecture */
+.double-bezel-shell {
+  border-radius: 2rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.5rem;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.65);
+}
+
+.double-bezel-core {
+  border-radius: 1.6rem;
+  background-color: #0D0E14;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Tactile button response per Emil Kowalski & Apple Design */
+.btn-press {
+  transition:
+    transform 100ms var(--ease-out),
+    background-color 160ms var(--ease-out),
+    border-color 160ms var(--ease-out),
+    box-shadow 160ms var(--ease-out),
+    color 160ms var(--ease-out),
+    opacity 160ms var(--ease-out);
+}
+
+.btn-press:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* Sonic Equalizer Bars (GPU-accelerated scaleY) */
+.sonic-bar-idle,
+.sonic-bar-active {
+  display: inline-block;
+  width: 4px;
+  border-radius: 9999px;
+  transform-origin: center;
+  will-change: transform;
+}
+
+.sonic-bar-idle {
+  animation: sonicPulseIdle 2.2s var(--ease-in-out) infinite alternate;
+}
+
+.sonic-bar-active {
+  animation: sonicPulseActive 0.58s var(--ease-in-out) infinite alternate;
+}
+
+@keyframes sonicPulseIdle {
+  0% {
+    transform: scaleY(0.45);
+    opacity: 0.65;
+  }
+  100% {
+    transform: scaleY(0.95);
+    opacity: 0.95;
+  }
+}
+
+@keyframes sonicPulseActive {
+  0% {
+    transform: scaleY(0.35);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scaleY(1.25);
+    opacity: 1;
+  }
+}
+
+/* Physical Keystroke Micro-UI (Panel 7 of Brand Kit) */
+.kbd-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1;
+  padding: 0.42rem 0.68rem;
+  border-radius: 8px;
+  background-color: #1A1D29;
+  color: #F8FAFC;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom-width: 3px;
+  border-bottom-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #060609;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #232634;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #363B50;
+}
+
+/* Focus Ring Accessibility */
+:focus-visible {
+  outline: 2px solid var(--spotify-green);
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .btn-press:active:not(:disabled) {
+    transform: none !important;
+  }
+}
